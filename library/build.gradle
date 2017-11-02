@@ -6,7 +6,7 @@ def siteUrl = 'https://github.com/xiongke15117937934/loadinglayout' //项目在g
 def gitUrl = 'https://github.com/xiongke15117937934/loadinglayout.git'   //Git仓库的地址
 
 group='com.github.xiongke'
-version='1.0.3'
+version='1.0.4'
 archivesBaseName='loadinglayout'
 
 android {
@@ -14,8 +14,7 @@ android {
     buildToolsVersion "24.0.2"
 
     defaultConfig {
-
-        minSdkVersion 16
+        minSdkVersion 15
         targetSdkVersion 24
         versionCode 1
         versionName version
