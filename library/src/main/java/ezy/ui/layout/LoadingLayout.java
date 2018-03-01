@@ -217,28 +217,6 @@ public class LoadingLayout extends FrameLayout {
         return this;
     }
 
-
-//    public LoadingLayout setTextColor(@ColorInt int color) {
-//        mTextColor = color;
-//        return this;
-//    }
-//    public LoadingLayout setTextSize(@ColorInt int dp) {
-//        mTextColor = dp2px(dp);
-//        return this;
-//    }
-//    public LoadingLayout setButtonTextColor(@ColorInt int color) {
-//        mButtonTextColor = color;
-//        return this;
-//    }
-//    public LoadingLayout setButtonTextSize(@ColorInt int dp) {
-//        mButtonTextColor = dp2px(dp);
-//        return this;
-//    }
-//    public LoadingLayout setButtonBackground(Drawable drawable) {
-//        mButtonBackground = drawable;
-//        return this;
-//    }
-
     public void showLoading() {
         show(mLoadingResId);
     }
