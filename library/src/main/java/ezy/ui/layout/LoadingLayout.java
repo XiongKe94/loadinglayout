@@ -91,7 +91,6 @@ public class LoadingLayout extends FrameLayout {
     Drawable mButtonBackground;
     int mEmptyResId = NO_ID, mLoadingResId = NO_ID, mErrorResId = NO_ID;
     int mContentId = NO_ID;
-    boolean mLoadingVisibility;
 
     Map<Integer, View> mLayouts = new HashMap<>();
 
@@ -126,8 +125,11 @@ public class LoadingLayout extends FrameLayout {
         mEmptyResId = a.getResourceId(R.styleable.LoadingLayout_llEmptyResId, R.layout._loading_layout_empty);
         mLoadingResId = a.getResourceId(R.styleable.LoadingLayout_llLoadingResId, R.layout._loading_layout_loading);
         mErrorResId = a.getResourceId(R.styleable.LoadingLayout_llErrorResId, R.layout._loading_layout_error);
-        mLoadingVisibility=a.getBoolean(R.styleable.LoadingLayout_llLoadingVisibility,false);
+        boolean mLoadingVisibility = a.getBoolean(R.styleable.LoadingLayout_llLoadingVisibility, false);
         a.recycle();
+        if (mLoadingVisibility) {
+            showLoading();
+        }
     }
 
     int dp2px(float dp) {
@@ -147,8 +149,6 @@ public class LoadingLayout extends FrameLayout {
         }
         View view = getChildAt(0);
         setContentView(view);
-        if (mLoadingVisibility)
-            showLoading();
     }
 
     private void setContentView(View view) {
