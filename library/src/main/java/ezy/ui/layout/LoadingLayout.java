@@ -21,6 +21,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
 import android.util.AttributeSet;
@@ -39,21 +40,30 @@ import ezy.library.loadinglayout.R;
 
 
 public class LoadingLayout extends FrameLayout {
+    enum State {
+        ERROR,
+        CONTENT,
+        EMPTY,
+        LOADING
+    }
+
     public interface OnInflateListener {
         void onInflate(View inflated);
     }
 
     public static LoadingLayout wrap(Activity activity) {
-        return wrap(((ViewGroup)activity.findViewById(android.R.id.content)).getChildAt(0));
+        return wrap(((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0));
     }
+
     public static LoadingLayout wrap(Fragment fragment) {
         return wrap(fragment.getView());
     }
+
     public static LoadingLayout wrap(View view) {
         if (view == null) {
             throw new RuntimeException("content view can not be null");
         }
-        ViewGroup parent = (ViewGroup)view.getParent();
+        ViewGroup parent = (ViewGroup) view.getParent();
         if (view == null) {
             throw new RuntimeException("parent view can not be null");
         }
@@ -91,6 +101,7 @@ public class LoadingLayout extends FrameLayout {
     Drawable mButtonBackground;
     int mEmptyResId = NO_ID, mLoadingResId = NO_ID, mErrorResId = NO_ID;
     int mContentId = NO_ID;
+    State pageState;
 
     Map<Integer, View> mLayouts = new HashMap<>();
 
@@ -138,6 +149,7 @@ public class LoadingLayout extends FrameLayout {
 
 
     LayoutInflater mInflater;
+
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
@@ -149,6 +161,7 @@ public class LoadingLayout extends FrameLayout {
         }
         View view = getChildAt(0);
         setContentView(view);
+        pageState = State.CONTENT;
     }
 
     private void setContentView(View view) {
@@ -163,6 +176,7 @@ public class LoadingLayout extends FrameLayout {
         }
         return this;
     }
+
     public LoadingLayout setEmpty(@LayoutRes int id) {
         if (mEmptyResId != id) {
             remove(mEmptyResId);
@@ -170,6 +184,7 @@ public class LoadingLayout extends FrameLayout {
         }
         return this;
     }
+
     public LoadingLayout setOnEmptyInflateListener(OnInflateListener listener) {
         mOnEmptyInflateListener = listener;
         if (mOnEmptyInflateListener != null && mLayouts.containsKey(mEmptyResId)) {
@@ -177,6 +192,7 @@ public class LoadingLayout extends FrameLayout {
         }
         return this;
     }
+
     public LoadingLayout setOnErrorInflateListener(OnInflateListener listener) {
         mOnErrorInflateListener = listener;
         if (mOnErrorInflateListener != null && mLayouts.containsKey(mErrorResId)) {
@@ -190,16 +206,19 @@ public class LoadingLayout extends FrameLayout {
         image(mEmptyResId, R.id.empty_image, mEmptyImage);
         return this;
     }
+
     public LoadingLayout setEmptyText(String value) {
         mEmptyText = value;
         text(mEmptyResId, R.id.empty_text, mEmptyText);
         return this;
     }
+
     public LoadingLayout setErrorImage(@DrawableRes int resId) {
         mErrorImage = resId;
         image(mErrorResId, R.id.error_image, mErrorImage);
         return this;
     }
+
     public LoadingLayout setErrorText(String value) {
         mErrorText = value;
         text(mErrorResId, R.id.error_text, mErrorText);
@@ -218,19 +237,27 @@ public class LoadingLayout extends FrameLayout {
     }
 
     public void showLoading() {
+        pageState = State.LOADING;
         show(mLoadingResId);
     }
 
     public void showEmpty() {
+        pageState = State.EMPTY;
         show(mEmptyResId);
     }
 
     public void showError() {
+        pageState = State.ERROR;
         show(mErrorResId);
     }
 
     public void showContent() {
+        pageState = State.CONTENT;
         show(mContentId);
+    }
+
+    public State getPageState() {
+        return pageState;
     }
 
     private void show(int layoutId) {
@@ -286,7 +313,11 @@ public class LoadingLayout extends FrameLayout {
                 btn.setText(mRetryText);
                 btn.setTextColor(mButtonTextColor);
                 btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, mButtonTextSize);
-                btn.setBackground(mButtonBackground);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    btn.setBackground(mButtonBackground);
+                } else {
+                    btn.setBackgroundDrawable(mButtonBackground);
+                }
                 btn.setOnClickListener(mRetryButtonClickListener);
             }
             if (mOnErrorInflateListener != null) {
