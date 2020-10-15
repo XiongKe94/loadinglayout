@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(v.getContext(), LoadingActivity.class));
             }
         });
-
      }
 
     @Override

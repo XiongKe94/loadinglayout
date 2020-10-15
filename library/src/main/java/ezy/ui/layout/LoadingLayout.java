@@ -40,7 +40,7 @@ import ezy.library.loadinglayout.R;
 
 
 public class LoadingLayout extends FrameLayout {
-    enum State {
+    public enum State {
         ERROR,
         CONTENT,
         EMPTY,
