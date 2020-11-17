@@ -17,15 +17,16 @@
 package ezy.demo.loadinglayout;
 
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import ezy.ui.layout.LoadingLayout;
 
@@ -41,7 +42,7 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        final RecyclerView list = (RecyclerView) findViewById(R.id.list);
+        final RecyclerView list = findViewById(R.id.list);
         list.setLayoutManager(new LinearLayoutManager(this));
         list.setAdapter(new RecyclerView.Adapter() {
             @Override
@@ -73,7 +74,7 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         });
         vLoading.showContent();
 
-        final SwipeRefreshLayout refresh = (SwipeRefreshLayout)findViewById(R.id.refresh);
+        final SwipeRefreshLayout refresh = findViewById(R.id.refresh);
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
